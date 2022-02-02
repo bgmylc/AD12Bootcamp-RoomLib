@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id "androidx.navigation.safeargs.kotlin"
+    id 'kotlin-kapt'
 }
 
 android {
@@ -49,4 +50,8 @@ dependencies {
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:2.4.0"
     implementation "androidx.navigation:navigation-ui-ktx:2.4.0"
+
+    //Room
+    implementation "androidx.room:room-runtime:2.4.1"
+    kapt "androidx.room:room-compiler:2.4.1"
 }

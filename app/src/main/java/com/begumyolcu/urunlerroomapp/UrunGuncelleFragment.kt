@@ -8,11 +8,14 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.begumyolcu.urunlerroomapp.databinding.FragmentUrunGuncelleBinding
+import com.begumyolcu.urunlerroomapp.room.UrunModel
+import com.begumyolcu.urunlerroomapp.room.UrunlerDatabase
 
 class UrunGuncelleFragment : Fragment() {
     private lateinit var binding: FragmentUrunGuncelleBinding
-//    private lateinit var urun: UrunModel
-    //TODO: DB ekle
+    private lateinit var urun: UrunModel
+    private lateinit var urunDB: UrunlerDatabase
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -21,36 +24,41 @@ class UrunGuncelleFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentUrunGuncelleBinding.inflate(inflater, container, false)
 
-//        val bundle: UrunGuncelleFragmentArgs by navArgs()
-//        urun = bundle.urun
+        val bundle: UrunGuncelleFragmentArgs by navArgs()
+        urun = bundle.urun
+
         return binding.root
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //TODO: DB getir
+        urunDB = UrunlerDatabase.getUrunlerDatabase(requireContext())!!
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //val urunID = urun.id
+        val urunID = urun.id
         binding.apply {
-//            editTextGuncelleUrunAd.text = urun.urunAd
-//            editTextGuncelleUrunFiyat.text = urun.urunFiyat.toString()
-//            editTexGuncelleUrunAdet.text = urun.urunAdet.toString()
+            editTextGuncelleUrunAd.setText(urun.urunAd)
+            editTextGuncelleUrunFiyat.setText(urun.urunFiyat.toString())
+            editTexGuncelleUrunAdet.setText(urun.urunAdet.toString())
 
             buttonUrunGuncelle.setOnClickListener {
                 val adInput = editTextGuncelleUrunAd.text.toString()
                 val fiyatInput = editTextGuncelleUrunFiyat.text.toString().toDouble()
                 val adetInput = editTexGuncelleUrunAdet.text.toString().toInt()
 
-                //TODO: DB ürün guncelle
+                urun.urunAd = adInput
+                urun.urunFiyat = fiyatInput
+                urun.urunAdet = adetInput
+
+                urunDB.urunlerDao.urunGuncelle(urun)
 
                 findNavController().navigate(R.id.guncelleToAnasayfa)
             }
 
             buttonUrunSil.setOnClickListener {
-                //TODO: DB urun sil
+                urunDB.urunlerDao.urunSil(urun)
 
                 findNavController().navigate(R.id.guncelleToAnasayfa)
             }

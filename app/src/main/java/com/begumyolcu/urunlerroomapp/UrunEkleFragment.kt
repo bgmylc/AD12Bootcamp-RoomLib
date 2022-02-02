@@ -7,11 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.begumyolcu.urunlerroomapp.databinding.FragmentUrunEkleBinding
+import com.begumyolcu.urunlerroomapp.room.UrunModel
+import com.begumyolcu.urunlerroomapp.room.UrunlerDatabase
 
 
 class UrunEkleFragment : Fragment() {
     private lateinit var binding: FragmentUrunEkleBinding
-    //TODO: DB ekle
+    private lateinit var urunDB: UrunlerDatabase
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,7 +26,7 @@ class UrunEkleFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //TODO: DB getir
+        urunDB = UrunlerDatabase.getUrunlerDatabase(requireContext())!!
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,7 +38,9 @@ class UrunEkleFragment : Fragment() {
                 val urunFiyatInput = editTextUrunFiyat.text.toString().toDouble()
                 val urunAdetInput = ediTextUrunAdet.text.toString().toInt()
 
-                //TODO: DB ürün ekle
+                urunDB.urunlerDao.urunEkle(
+                    UrunModel(urunAd = urunAdInput, urunAdet = urunAdetInput, urunFiyat = urunFiyatInput)
+                )
 
                 findNavController().navigate(R.id.urunEkleToAnasayfa)
             }

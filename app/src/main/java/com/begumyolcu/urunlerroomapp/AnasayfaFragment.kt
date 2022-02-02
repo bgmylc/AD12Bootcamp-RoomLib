@@ -8,12 +8,14 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.begumyolcu.urunlerroomapp.databinding.FragmentAnasayfaBinding
+import com.begumyolcu.urunlerroomapp.room.UrunModel
+import com.begumyolcu.urunlerroomapp.room.UrunlerDatabase
 import com.google.android.material.snackbar.Snackbar
 
 class AnasayfaFragment : Fragment() {
     private lateinit var binding: FragmentAnasayfaBinding
-    //private lateinit var urunList: List<UrunModel>
-    //TODO: DB ekle
+    private lateinit var urunList: List<UrunModel>
+    private lateinit var urunDB: UrunlerDatabase
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,13 +29,13 @@ class AnasayfaFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //TODO: DB getir
-        //TODO: urunList'e tüm ürünleri getir
+        urunDB = UrunlerDatabase.getUrunlerDatabase(requireContext())!!
+        urunList = urunDB.urunlerDao.tumUrunler()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // tumUrunleriGoster()
+        tumUrunleriGoster()
 
         binding.apply {
             buttonYeniUrun.setOnClickListener {
@@ -42,18 +44,17 @@ class AnasayfaFragment : Fragment() {
         }
     }
 
-//    fun tumUrunleriGoster() {
-//        binding.apply {
-//
-//            if (urunList.isEmpty()) {
-//                Snackbar.make(requireView(), "Ürün bulunamadı", 1000).show()
-//            } else {
-//                val urunlerAdapter = UrunlerAdapter(urunList)
-//                rvUrun.adapter = urunlerAdapter
-//                rvUrun.layoutManager = GridLayoutManager(context,2)
-//                rvUrun.setHasFixedSize(true)
-//            }
-//        }
-//    }
+    fun tumUrunleriGoster() {
+        binding.apply {
+            if (urunList.isEmpty()) {
+                Snackbar.make(requireView(), "Ürün bulunamadı", 1000).show()
+            } else {
+                val urunlerAdapter = UrunlerAdapter(urunList)
+                rvUrun.adapter = urunlerAdapter
+                rvUrun.layoutManager = GridLayoutManager(context,2)
+                rvUrun.setHasFixedSize(true)
+            }
+        }
+    }
 
 }

@@ -38,5 +38,8 @@
             app:destination="@id/anasayfaFragment"
             app:popUpTo="@id/anasayfaFragment"
             app:popUpToInclusive="true"/>
+        <argument
+            android:name="urun"
+            app:argType="com.begumyolcu.urunlerroomapp.room.UrunModel" />
     </fragment>
 </navigation>

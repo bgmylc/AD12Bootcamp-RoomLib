@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/anasayfaFragment">
+
+    <fragment
+        android:id="@+id/anasayfaFragment"
+        android:name="com.begumyolcu.urunlerroomapp.AnasayfaFragment"
+        android:label="fragment_anasayfa"
+        tools:layout="@layout/fragment_anasayfa" >
+        <action
+            android:id="@+id/anasayfaToUrunEkle"
+            app:destination="@id/urunEkleFragment" />
+        <action
+            android:id="@+id/anasayfaToGuncelle"
+            app:destination="@id/urunGuncelleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/urunEkleFragment"
+        android:name="com.begumyolcu.urunlerroomapp.UrunEkleFragment"
+        android:label="fragment_urun_ekle"
+        tools:layout="@layout/fragment_urun_ekle" >
+        <action
+            android:id="@+id/urunEkleToAnasayfa"
+            app:destination="@id/anasayfaFragment"
+            app:popUpTo="@id/anasayfaFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/urunGuncelleFragment"
+        android:name="com.begumyolcu.urunlerroomapp.UrunGuncelleFragment"
+        android:label="fragment_urun_guncelle"
+        tools:layout="@layout/fragment_urun_guncelle" >
+        <action
+            android:id="@+id/guncelleToAnasayfa"
+            app:destination="@id/anasayfaFragment"
+            app:popUpTo="@id/anasayfaFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+</navigation>

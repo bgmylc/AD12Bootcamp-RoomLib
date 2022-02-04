@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.begumyolcu.urunlerroomapp.databinding.FragmentUrunGuncelleBinding
@@ -15,6 +17,7 @@ class UrunGuncelleFragment : Fragment() {
     private lateinit var binding: FragmentUrunGuncelleBinding
     private lateinit var urun: UrunModel
     private lateinit var urunDB: UrunlerDatabase
+    private lateinit var urunViewModel: UrunViewModel
 
 
     override fun onCreateView(
@@ -22,10 +25,20 @@ class UrunGuncelleFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentUrunGuncelleBinding.inflate(inflater, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_urun_guncelle, container, false)
 
         val bundle: UrunGuncelleFragmentArgs by navArgs()
         urun = bundle.urun
+
+        val application = requireNotNull(this.activity).application
+        val dataSource = UrunlerDatabase.getUrunlerDatabase(application)?.urunlerDao
+
+        val viewModelFactory = dataSource?.let{ UrunViewModelFactory(it, application)}
+        urunViewModel = viewModelFactory?.let {
+            ViewModelProvider(this, it).get(UrunViewModel::class.java)
+        }!!
+
+        binding.setLifecycleOwner(this)
 
         return binding.root
     }
@@ -52,13 +65,13 @@ class UrunGuncelleFragment : Fragment() {
                 urun.urunFiyat = fiyatInput
                 urun.urunAdet = adetInput
 
-                urunDB.urunlerDao.urunGuncelle(urun)
+                urunViewModel.guncelleUrun(urun)
 
                 findNavController().navigate(R.id.guncelleToAnasayfa)
             }
 
             buttonUrunSil.setOnClickListener {
-                urunDB.urunlerDao.urunSil(urun)
+                urunViewModel.silUrun(urun)
 
                 findNavController().navigate(R.id.guncelleToAnasayfa)
             }

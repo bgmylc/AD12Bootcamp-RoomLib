@@ -5,17 +5,17 @@ import androidx.room.*
 @Dao
 interface UrunlerDao {
     @Insert
-    fun urunEkle(urun: UrunModel)
+    suspend fun urunEkle(urun: UrunModel)
 
     @Update
-    fun urunGuncelle(urun: UrunModel)
+    suspend fun urunGuncelle(urun: UrunModel)
 
     @Delete
-    fun urunSil(urun: UrunModel)
+    suspend fun urunSil(urun: UrunModel)
 
     @Query("SELECT * FROM urunler_tablo")
-    fun tumUrunler() : List<UrunModel>
+    suspend fun tumUrunler(): List<UrunModel>
 
     @Query("SELECT * FROM urunler_tablo WHERE id = :key")
-    fun urunGetir(key : Int) : UrunModel?
+    suspend fun urunGetir(key: Int): UrunModel?
 }
